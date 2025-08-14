@@ -49,11 +49,13 @@ int main(int argc, char* argv[]){
   int Ls = 4; // 8
   int seed = 1;
   double width = 0.0;
+  double mass = 0.0;
 
-  if(argc==4){
+  if(argc==5){
     Ls = atoi(argv[1]);
     seed = atoi(argv[2]);
     width = atof(argv[3]);
+    mass = atof(argv[4]);
   }
   std::cout << "Ls = " << Ls << std::endl;
   std::cout << "seed = " << seed << std::endl;
@@ -109,6 +111,8 @@ int main(int argc, char* argv[]){
   std::mt19937 gen(seed);
   std::normal_distribution d{0.0, width};
 
+  std::cout << "set U" << std::endl;
+
   GaugeField U(Ddw.vol);
   for(Idx i=0; i<Ddw.vol; i++){
     for(int mu=1; mu<=4; mu++){
@@ -116,14 +120,17 @@ int main(int argc, char* argv[]){
     }
   }
 
+  std::cout << "set mat" << std::endl;
 
   // Eigen::MatrixXcd dw = Ddw.matrix_form( 0.0 );
   // Eigen::MatrixXcd pv = Ddw.matrix_form( 1.0 );
 
   // Eigen::MatrixXcd mat = pv.inverse() * dw;
-  Eigen::MatrixXcd mat = Ddw.matrix_form( 0.0, U );
+  Eigen::MatrixXcd mat = Ddw.matrix_form( mass, U );
   // // std::cout << "g2 = " << std::endl;
   // // std::cout << Ddw.gamma[2] << std::endl;
+
+  std::cout << "done" << std::endl;
 
   // Eigen::MatrixXcd Hw = Ddw.get_Hw( 0.0 );
   // Eigen::MatrixXcd g5 = Ddw.get_g5();
@@ -290,7 +297,7 @@ int main(int argc, char* argv[]){
   // }
   {
     // std::ofstream file("ev.dat", std::ios::trunc);
-    std::ofstream file("ev_Ddw_Ls"+std::to_string(Ls)+"_seed"+std::to_string(seed)+"_width"+std::to_string(width)+".dat", std::ios::trunc);
+    std::ofstream file("ev_Ddw_Ls"+std::to_string(Ls)+"_mass"+std::to_string(mass)+"_seed"+std::to_string(seed)+"_width"+std::to_string(width)+".dat", std::ios::trunc);
     file << std::scientific << std::setprecision(15);
 
     file << "# ev" << std::endl;

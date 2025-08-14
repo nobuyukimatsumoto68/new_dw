@@ -17,7 +17,7 @@ using GaugeField = std::vector<std::array<G, 5>>; // U[x][mu], U[x][0] = 0.0
 
 
 struct DomainWall{
-  using MS=Eigen::Matrix2cd; // spin
+  using MS=Eigen::Matrix2cd; // weyl
   using MD=Eigen::Matrix4cd; // dirac
   using VD=Eigen::Vector4d; // dirac
   // using VE=Eigen::Vector5d; // embed
@@ -319,7 +319,9 @@ struct DomainWall{
     // Eigen::MatrixXcd Hw = get_Hw(-M5);
     Eigen::MatrixXcd Hw = get_Hw(-M5);
     Hw *= -1.0;
+    std::cout << "exp" << std::endl;
     const Eigen::MatrixXcd Tinv = Hw.exp();
+    std::cout << "exp done" << std::endl;
 
     // main matrix
     Eigen::MatrixXcd Dchi = Eigen::MatrixXcd::Zero(4*Ls*vol, 4*Ls*vol);
